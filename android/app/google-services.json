@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "320445565970",
+    "project_id": "mixmaxify",
+    "storage_bucket": "mixmaxify.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:320445565970:android:d72a0cdaa58fbfc0ec1ccb",
+        "android_client_info": {
+          "package_name": "com.example.mixmax"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5WuLNspqaYc1ZX8pU2jq3Qg26LeuTl5U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
