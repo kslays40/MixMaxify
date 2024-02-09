@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:mixmax/drivelist.dart';
 import 'package:mixmax/firebasemusic.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:path/path.dart';
@@ -27,6 +28,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'FlutterPlay Songs',
       theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color(0xFF059DC0),
+        ),
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: 'FlutterPlay Songs'),
@@ -356,7 +361,7 @@ class _MyHomePageState extends State<MyHomePage> {
         leading: IconButton(
             onPressed: () {},
             icon: const Icon(
-              CupertinoIcons.music_note,
+              CupertinoIcons.settings_solid,
               color: Colors.black,
             )),
         title: const Text(
@@ -368,16 +373,8 @@ class _MyHomePageState extends State<MyHomePage> {
             fontSize: 22.0,
           ),
         ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
-        actions: [
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                CupertinoIcons.search,
-                color: Colors.black,
-              )),
-        ],
       ),
       body: !_hasPermission
           ? noAccessToLibraryWidget()
@@ -464,8 +461,17 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                           Spacer(),
-                          SvgPicture.asset(
-                            'assets/gcd.svg',
+                          GestureDetector(
+                            onTap: () {
+                              //Navigator.push(
+                              //  context,
+                              //  MaterialPageRoute(
+                              //      builder: (context) => drivelist()),
+                              //);
+                            },
+                            child: SvgPicture.asset(
+                              'assets/gcd.svg',
+                            ),
                           ),
                         ],
                       ),
@@ -484,15 +490,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ),
                         Spacer(),
-                        IconButton(
-                          onPressed: () {},
-                          icon: IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                CupertinoIcons.settings,
-                                color: Colors.black,
-                              )),
-                        )
                       ],
                     ),
                     Expanded(

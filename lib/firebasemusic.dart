@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:mixmax/Globals.dart';
+import 'package:mixmax/drivelist.dart';
 import 'package:mixmax/firebasemusicscreen.dart';
 
 class firebasemusic extends StatefulWidget {
@@ -30,24 +33,87 @@ class _firebasemusicState extends State<firebasemusic> {
               CupertinoIcons.music_note_list,
               color: Colors.black,
             )),
-        title: const Text(
-          "Firebase Playlist",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-            fontFamily: 'sfpro',
-            fontSize: 22.0,
-          ),
-        ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
-      ),
-      //upload song fab button
-      floatingActionButton: FloatingActionButton(
-        isExtended: true,
-        onPressed: () {},
-        backgroundColor: Color(0xFF059DC0),
-        child: const Icon(CupertinoIcons.share_up),
+        actions: [
+          IconButton(
+              onPressed: () async {
+                showModalBottomSheet<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                );
+                // call firebase update playlist
+                var collection = FirebaseFirestore.instance.collection('songs');
+                var querySnapshot = await collection.get();
+                for (var queryDocumentSnapshot in querySnapshot.docs) {
+                  Map<String, dynamic> data = queryDocumentSnapshot.data();
+                  //print(data['song']);
+                  await playlist.add(
+                    AudioSource.uri(Uri.parse(data["song"])),
+                  );
+                }
+                await player.setAudioSource(playlist,
+                    initialIndex: 0, initialPosition: Duration.zero);
+                player.play();
+                await player.setLoopMode(LoopMode.all);
+                if (player.playing == true) {
+                  Navigator.pop(context);
+                }
+              },
+              icon: Icon(
+                CupertinoIcons.refresh_thick,
+                color: Colors.black,
+              )),
+          IconButton(
+            onPressed: () {
+              player.play();
+            },
+            icon: Icon(
+              CupertinoIcons.play_fill,
+              color: Colors.black,
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              player.pause();
+            },
+            icon: Icon(
+              CupertinoIcons.pause,
+              color: Colors.black,
+            ),
+          ),
+          IconButton(
+            onPressed: () async{
+              await player.seekToPrevious();
+            },
+            icon: Icon(
+              CupertinoIcons.arrow_left_to_line,
+              color: Colors.black,
+            ),
+          ),
+          IconButton(
+            onPressed: () async{
+              await player.seekToNext();
+            },
+            icon: Icon(
+              CupertinoIcons.arrow_right_to_line,
+              color: Colors.black,
+            ),
+          ),
+          IconButton(
+            onPressed: () async {
+              await playlist.clear();
+            },
+            icon: Icon(
+              CupertinoIcons.delete,
+              color: Colors.black,
+            ),
+          ),
+        ],
       ),
       body: FutureBuilder(
           future: getData(),
